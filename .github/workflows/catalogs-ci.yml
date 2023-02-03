@@ -141,7 +141,7 @@ jobs:
       # https://stackoverflow.com/questions/73305126/passing-env-variable-inputs-to-a-reusable-workflow
       tests-path: ${{ vars.CATALOGS_SERVICE_TESTS_PATH }} # tests/Services/Catalogs
       project-path: ${{ vars.CATALOGS_SERVICE_PROJECT_PATH }} # src/Services/Catalogs/ECommerce.Services.Catalogs.Api
-      service-name: ${{ vars.CATALOGS_SERVICE_NAME }}
+      service-name: ${{ vars.CATALOGS_SERVICE_NAME }} # catalogs-service
 
   call-build-test-push:
     needs: pre-check
