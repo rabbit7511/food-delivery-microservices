@@ -4,17 +4,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace FoodDelivery.Services.Identity.Identity.Data;
 
-public class IdentityDataSeeder : IDataSeeder
+public class IdentityDataSeeder(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+    : IDataSeeder
 {
-    private readonly RoleManager<ApplicationRole> _roleManager;
-    private readonly UserManager<ApplicationUser> _userManager;
-
-    public IdentityDataSeeder(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
-    {
-        _userManager = userManager;
-        _roleManager = roleManager;
-    }
-
     public async Task SeedAllAsync()
     {
         await SeedRoles();
@@ -25,16 +17,16 @@ public class IdentityDataSeeder : IDataSeeder
 
     private async Task SeedRoles()
     {
-        if (!await _roleManager.RoleExistsAsync(ApplicationRole.Admin.Name))
-            await _roleManager.CreateAsync(ApplicationRole.Admin);
+        if (!await roleManager.RoleExistsAsync(ApplicationRole.Admin.Name))
+            await roleManager.CreateAsync(ApplicationRole.Admin);
 
-        if (!await _roleManager.RoleExistsAsync(ApplicationRole.User.Name))
-            await _roleManager.CreateAsync(ApplicationRole.User);
+        if (!await roleManager.RoleExistsAsync(ApplicationRole.User.Name))
+            await roleManager.CreateAsync(ApplicationRole.User);
     }
 
     private async Task SeedUsers()
     {
-        if (await _userManager.FindByEmailAsync("mehdi@test.com") == null)
+        if (await userManager.FindByEmailAsync("mehdi@test.com") == null)
         {
             var user = new ApplicationUser
             {
@@ -44,13 +36,13 @@ public class IdentityDataSeeder : IDataSeeder
                 Email = "mehdi@test.com",
             };
 
-            var result = await _userManager.CreateAsync(user, "123456");
+            var result = await userManager.CreateAsync(user, "123456");
 
             if (result.Succeeded)
-                await _userManager.AddToRoleAsync(user, ApplicationRole.Admin.Name);
+                await userManager.AddToRoleAsync(user, ApplicationRole.Admin.Name);
         }
 
-        if (await _userManager.FindByEmailAsync("mehdi2@test.com") == null)
+        if (await userManager.FindByEmailAsync("mehdi2@test.com") == null)
         {
             var user = new ApplicationUser
             {
@@ -60,10 +52,10 @@ public class IdentityDataSeeder : IDataSeeder
                 Email = "mehdi2@test.com"
             };
 
-            var result = await _userManager.CreateAsync(user, "123456");
+            var result = await userManager.CreateAsync(user, "123456");
 
             if (result.Succeeded)
-                await _userManager.AddToRoleAsync(user, ApplicationRole.User.Name);
+                await userManager.AddToRoleAsync(user, ApplicationRole.User.Name);
         }
     }
 }
