@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Environments = BuildingBlocks.Core.Web.Environments;
 
 namespace FoodDelivery.Services.Customers.DependencyTests;
 
@@ -15,7 +16,7 @@ public class DependencyTests
     {
         var factory = new WebApplicationFactory<CustomersApiMetadata>().WithWebHostBuilder(webHostBuilder =>
         {
-            webHostBuilder.UseEnvironment("test");
+            webHostBuilder.UseEnvironment(Environments.DependencyTest);
 
             webHostBuilder.ConfigureTestServices(services =>
             {
